@@ -26,3 +26,13 @@ Value of var variable: 20
 Address stored in ip variable: 0xbfc601ac
 Value of *ip variable: 20
 ```
+
+void* 指针可以存放任意类型的指针
+```c++
+i=0;
+int *ip=i;// 非法只能放地址
+```
+```c++
+int*p1,p2;
+```
+只有第一个是指针，第二个是int型变量
