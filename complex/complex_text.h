@@ -35,9 +35,22 @@ inline double real(const complex &x)
 }
 inline complex operator+ (const complex& x,const complex& y)
 {
-    return complex(real(x)+real(y),imag(x)+imag(y));
+    return complex(x.real()+y.real(),x.imag()+y.imag());
 }
-
+inline complex operator+ (const complex& x,double y)
+{
+    return complex(x.real()+y,x.imag());
+}
+inline complex operator+ (double x,const complex& y)
+{
+    return complex(x+y.real(),y.imag());
+}
+#include<iostream>
+using namespace std;
+ostream &operator <<(ostream &os, const complex& x)
+{
+    return os<<"("<<x.real()<<","<<x.imag()<<")"<<endl;
+}
 #endif
 /* 笔记
 在class body中定义的会自动成为内联函数
