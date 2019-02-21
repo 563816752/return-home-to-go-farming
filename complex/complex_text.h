@@ -1,18 +1,19 @@
 #ifndef _complex_text_
-#define _complex_text_//·ÀÎÀÊ½ÉùÃ÷
+#define _complex_text_//é˜²å«å¼å£°æ˜
 
 #include<cmath>
 
 class complex
 {
 public:
-    complex(double r=0,double i=0):re(r),im(i){}//³õÖµÁĞ£¬³õÊ¼»¯
-    double real() const{ return re;}//Èç¹ûÕâ¸öº¯Êı²»¸Ä±ä³õÊ¼ÖµÔòÈÏÎªconst
+    complex(double r=0,double i=0):re(r),im(i){}//åˆå€¼åˆ—ï¼Œåˆå§‹åŒ–
+    double real() const{ return re;}//å¦‚æœè¿™ä¸ªå‡½æ•°ä¸æ”¹å˜åˆå§‹å€¼åˆ™è®¤ä¸ºconst
     double imag() const{ return im;}
-    complex& operator += (const complex&);//ÉùÃ÷ÁËÒ»¸ö+=º¯Êı Êä³öÊÇÒ»¸öcomplexµÄÒıÓÃ
+    complex& operator += (const complex&);//å£°æ˜äº†ä¸€ä¸ª+=å‡½æ•° è¾“å‡ºæ˜¯ä¸€ä¸ªcomplexçš„å¼•ç”¨
+    complex operator  -- ();
 private:
-    double re,im;//Êı¾İ·â×°ÆğÀ´
-    friend complex & __doapl(complex*, const complex&);//ÓÑÔªº¯Êı
+    double re,im;//æ•°æ®å°è£…èµ·æ¥
+    friend complex & __doapl(complex*, const complex&);//å‹å…ƒå‡½æ•°
 };
 
 inline complex& __doapl(complex* ths, const complex& r)
@@ -23,7 +24,7 @@ inline complex& __doapl(complex* ths, const complex& r)
 }
 inline complex& complex::operator+=(const complex& r)
 {
-    return __doapl(this,r);//ÎªÁË¿ÉÒÔÁ¬³Ë
+    return __doapl(this,r);//ä¸ºäº†å¯ä»¥è¿ä¹˜
 }
 inline double imag(const complex &x)
 {
@@ -35,15 +36,27 @@ inline double real(const complex &x)
 }
 inline complex operator+ (const complex& x,const complex& y)
 {
-    return complex(x.real()+y.real(),x.imag()+y.imag());
+    return complex(real(x)+real(y),imag(x)+imag(y));
 }
 inline complex operator+ (const complex& x,double y)
 {
-    return complex(x.real()+y,x.imag());
+    return complex(real(x)+y,imag(x));
 }
 inline complex operator+ (double x,const complex& y)
 {
-    return complex(x+y.real(),y.imag());
+    return complex(x+real(y),imag(y));
+}
+inline complex operator +(const complex &x)
+{
+    return x;
+}
+inline complex operator -(const complex &x)
+{
+    return complex(-x.real(),-x.imag());
+}
+inline complex complex::operator --()
+{
+    return complex(this->real()-1,this->imag());
 }
 #include<iostream>
 using namespace std;
@@ -52,27 +65,40 @@ ostream &operator <<(ostream &os, const complex& x)
     return os<<"("<<x.real()<<","<<x.imag()<<")"<<endl;
 }
 #endif
-/* ±Ê¼Ç
-ÔÚclass bodyÖĞ¶¨ÒåµÄ»á×Ô¶¯³ÉÎªÄÚÁªº¯Êı
-²»´øÖ¸ÕëµÄ²»ÓÃĞ´Îö¹¹º¯Êı
-°Ñ¹¹Ôìº¯ÊıĞ´µÀprivateÖĞ²úÉúsingleton µ¥¼ä£¬¶ÔÏóÖ»ÓĞÒ»¸ö   static A& getInstance();
-ÏàÍ¬classµÄ²»Í¬object»¥ÎªÓÑÔª
-ÓĞµØ·½¿ÉÒÔ·ÅÓÃÒıÓÃÀ´·µ»Ø£¬Ã»µØ·½·Å·µ»ØÖµ
+/* ç¬”è®°
+åœ¨class bodyä¸­å®šä¹‰çš„ä¼šè‡ªåŠ¨æˆä¸ºå†…è”å‡½æ•°
+ä¸å¸¦æŒ‡é’ˆçš„ä¸ç”¨å†™ææ„å‡½æ•°
+æŠŠæ„é€ å‡½æ•°å†™é“privateä¸­äº§ç”Ÿsingleton å•é—´ï¼Œå¯¹è±¡åªæœ‰ä¸€ä¸ª   static A& getInstance();
+ç›¸åŒclassçš„ä¸åŒobjectäº’ä¸ºå‹å…ƒ
+æœ‰åœ°æ–¹å¯ä»¥æ”¾ç”¨å¼•ç”¨æ¥è¿”å›ï¼Œæ²¡åœ°æ–¹æ”¾è¿”å›å€¼
+typename()äº§ç”Ÿä¸€ä¸ªä¸´æ—¶å˜é‡
 */
 
 /*
-ÒÉÎÊ£º
-ÎªÊ²Ã´º¯ÊıÒª¶¨Òåconst
+ç–‘é—®ï¼š
+ä¸ºä»€ä¹ˆå‡½æ•°è¦å®šä¹‰const
 */
  
 /*
 int i = 5;
-int* iPtr = &i; // ÀàĞÍ»¯µÄÖ¸Õë£¬ÖªµÀÊÇ´ÓÄÚ´æÖĞÈ¡¼¸¸ö×Ö½Ú
+int* iPtr = &i; // ç±»å‹åŒ–çš„æŒ‡é’ˆï¼ŒçŸ¥é“æ˜¯ä»å†…å­˜ä¸­å–å‡ ä¸ªå­—èŠ‚
 printf("%d\n",iPtr);
 int i1 = *iPtr;
-printf("i1=%d\n",i1); // È¡iPtrÖ¸ÕëÖ¸ÏòµÄÄÚ´æÖĞµÄÊı¾İ
+printf("i1=%d\n",i1); // å–iPtræŒ‡é’ˆæŒ‡å‘çš„å†…å­˜ä¸­çš„æ•°æ®
 
-iptr ÊÇint* ÀàĞÍ
-iptr ´æ·ÅµÄÊÇ iµÄµØÖ·
-*iptr ¿ÉÒÔµØÖ·¶ÔÓ¦µÄ
+iptr æ˜¯int* ç±»å‹
+iptr å­˜æ”¾çš„æ˜¯ içš„åœ°å€
+*iptr å¯ä»¥åœ°å€å¯¹åº”çš„
+*/
+/*
+1ã€å‰ç½®++é‡è½½æ—¶æ²¡æœ‰å‚æ•°ï¼Œè€Œåç½®++é‡è½½æ—¶æœ‰å‚æ•°ã€‚ä¸ä¼šä½¿ç”¨å…¶å‚æ•°ï¼Œä»…ä»…æ˜¯åŒºåˆ†ç”¨ã€‚å¯ä»¥ç†è§£ä¸ºå‰ç½®++åé¢æœ‰å‚æ•°äº†ï¼Œæ‰€ä»¥ä¸éœ€è¦å‚æ•°Â 
+
+2ã€å‰ç½®++éœ€è¦è¿”å›å¼•ç”¨ï¼Œå› ä¸ºé‡è½½è‡ªåŠ è¿ç®—ç¬¦åå¯ä»¥è¿”å›å¯¹è±¡çš„å¼•ç”¨ï¼Œ ä»¥æ–¹ä¾¿åœ¨è¡¨è¾¾å¼ä¸­è¿ç»­ä½¿ç”¨ã€‚è€Œåç½®++è¿”å›çš„ä¸æ˜¯å¼•ç”¨ï¼Œæ‰€ä»¥ä¸èƒ½è¿›è¡Œè¿ç»­ä½¿ç”¨ã€‚
+
+3.åç½®è¿ç®—ç¬¦è¿”å›çš„å€¼æ˜¯tempï¼Œéœ€è¦æ³¨æ„ã€‚å› ä¸ºæ˜¯ååŠ ã€‚
+--------------------- 
+ä½œè€…ï¼šlove music. 
+æ¥æºï¼šCSDN 
+åŸæ–‡ï¼šhttps://blog.csdn.net/qq_29762941/article/details/80973027 
+ç‰ˆæƒå£°æ˜ï¼šæœ¬æ–‡ä¸ºåšä¸»åŸåˆ›æ–‡ç« ï¼Œè½¬è½½è¯·é™„ä¸Šåšæ–‡é“¾æ¥ï¼
 */
