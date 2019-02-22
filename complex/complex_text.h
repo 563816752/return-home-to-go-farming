@@ -45,6 +45,11 @@ inline complex operator+ (double x,const complex& y)
 {
     return complex(x+y.real(),y.imag());
 }
+inline complex operator+ (const complex& x)
+{
+    return x;
+}
+
 #include<iostream>
 using namespace std;
 ostream &operator <<(ostream &os, const complex& x)
